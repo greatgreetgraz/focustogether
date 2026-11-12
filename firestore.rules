@@ -1,0 +1,143 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ---------- users/{uid} ----------
+
+    function validUser(d) {
+      return d.keys().hasOnly(['displayName', 'photoURL', 'createdAt', 'language'])
+        && d.keys().hasAll(['displayName', 'photoURL', 'createdAt', 'language'])
+        && (d.displayName == null || (d.displayName is string && d.displayName.size() <= 200))
+        && (d.photoURL == null || (d.photoURL is string && d.photoURL.size() <= 2000))
+        && d.createdAt is timestamp
+        && d.language in ['th', 'en'];
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && validUser(request.resource.data);
+      allow update: if isOwner(uid)
+        && validUser(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isOwner(uid);
+    }
+
+    // ---------- sessions/{id} ----------
+
+    function validSession(d) {
+      return d.keys().hasOnly([
+          'uid', 'task', 'plannedMinutes', 'actualMinutes', 'startedAt',
+          'endedAt', 'status', 'roomId', 'friendsActiveCount', 'localDate', 'tripId'
+        ])
+        // tripId is optional: sessions saved before journeys existed don't have it.
+        && (!('tripId' in d) || d.tripId == null || d.tripId is string)
+        && d.keys().hasAll([
+          'uid', 'task', 'plannedMinutes', 'actualMinutes', 'startedAt',
+          'endedAt', 'status', 'roomId', 'friendsActiveCount', 'localDate'
+        ])
+        && d.uid is string
+        && d.task is string && d.task.size() <= 100
+        && d.plannedMinutes is int && d.plannedMinutes >= 1 && d.plannedMinutes <= 600
+        && d.actualMinutes is number && d.actualMinutes >= 0
+        && d.actualMinutes <= d.plannedMinutes
+        && d.startedAt is timestamp
+        && d.status in ['active', 'completed', 'ended_early']
+        && ((d.status == 'active' && d.endedAt == null)
+            || (d.status != 'active' && d.endedAt is timestamp))
+        && (d.roomId == null || d.roomId is string)
+        && d.friendsActiveCount is int && d.friendsActiveCount >= 0
+        && d.localDate is string && d.localDate.size() == 10;
+    }
+
+    match /sessions/{id} {
+      // Works for queries too, as long as they filter on where('uid', '==', auth.uid).
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && validSession(request.resource.data)
+        && request.resource.data.status == 'active'
+        && request.resource.data.actualMinutes == 0
+        && request.resource.data.endedAt == null;
+
+      // Only the owner, only while the session is still active (i.e. when finishing it),
+      // and the descriptive fields can't be rewritten.
+      allow update: if isSignedIn()
+        && resource.data.uid == request.auth.uid
+        && resource.data.status == 'active'
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.task == resource.data.task
+        && request.resource.data.plannedMinutes == resource.data.plannedMinutes
+        && request.resource.data.startedAt == resource.data.startedAt
+        && request.resource.data.localDate == resource.data.localDate
+        && request.resource.data.get('tripId', null) == resource.data.get('tripId', null)
+        && validSession(request.resource.data);
+
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // ---------- trips/{id} (journeys: an optional theme on top of sessions) ----------
+
+    function validTrip(d) {
+      return d.keys().hasOnly([
+          'uid', 'regionId', 'goalMinutes', 'reversed', 'focusedMinutes',
+          'startedAt', 'endedAt', 'status'
+        ])
+        && d.keys().hasAll([
+          'uid', 'regionId', 'goalMinutes', 'reversed', 'focusedMinutes',
+          'startedAt', 'endedAt', 'status'
+        ])
+        && d.uid is string
+        && d.regionId in ['north', 'northeast', 'central', 'east', 'west', 'south']
+        && d.goalMinutes is int && d.goalMinutes >= 30 && d.goalMinutes <= 6000
+        && d.reversed is bool
+        && d.focusedMinutes is number && d.focusedMinutes >= 0
+        && d.startedAt is timestamp
+        && d.status in ['active', 'arrived', 'ended']
+        && ((d.status == 'active' && d.endedAt == null)
+            || (d.status != 'active' && d.endedAt is timestamp));
+    }
+
+    match /trips/{id} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && validTrip(request.resource.data)
+        && request.resource.data.status == 'active'
+        && request.resource.data.focusedMinutes == 0;
+
+      // Only the owner, only while the journey is still active (adding minutes,
+      // arriving, or leaving). The route, goal, direction and start can't change,
+      // and the focused minutes can only go up.
+      allow update: if isSignedIn()
+        && resource.data.uid == request.auth.uid
+        && resource.data.status == 'active'
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.regionId == resource.data.regionId
+        && request.resource.data.goalMinutes == resource.data.goalMinutes
+        && request.resource.data.reversed == resource.data.reversed
+        && request.resource.data.startedAt == resource.data.startedAt
+        && request.resource.data.focusedMinutes >= resource.data.focusedMinutes
+        && validTrip(request.resource.data);
+
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

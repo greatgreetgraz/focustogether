@@ -1,0 +1,172 @@
+{
+  "app": {
+    "name": "FocusTogether",
+    "tagline": "Calm, steady focus — one session at a time."
+  },
+  "common": {
+    "untitledTask": "Focus time",
+    "loading": "Loading…",
+    "language": "Language",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode",
+    "account": "Account",
+    "signOut": "Sign out",
+    "home": "Home",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "setup": {
+    "title": "Almost there",
+    "body": "Firebase isn't configured yet. Copy .env.example to .env, fill in your Firebase web app keys, then restart the dev server."
+  },
+  "login": {
+    "title": "Welcome",
+    "subtitle": "Sign in to keep your focus sessions in one place.",
+    "google": "Continue with Google",
+    "signingIn": "Signing in…",
+    "error": "Couldn't sign in. Please try again."
+  },
+  "home": {
+    "greeting": "Hi there",
+    "greetingNamed": "Hi {{name}}",
+    "heading": "Ready when you are.",
+    "taskLabel": "What are you working on?",
+    "taskPlaceholder": "e.g. Physics homework",
+    "durationLabel": "How long?",
+    "custom": "Custom",
+    "customPlaceholder": "min",
+    "customHint": "Any number from {{min}} to {{max}} minutes",
+    "start": "Start",
+    "startWithMinutes": "Start · {{minutes}} min"
+  },
+  "focus": {
+    "focusing": "Focusing",
+    "paused": "Paused — take your time",
+    "pause": "Pause",
+    "resume": "Resume",
+    "doneEarly": "Done early",
+    "plannedOf": "of {{n}} min",
+    "toggleDigits": "Show or hide the numbers"
+  },
+  "end": {
+    "completedTitle": "Session complete",
+    "earlyTitle": "Thanks for showing up",
+    "completedMessages": [
+      "You gave this your full attention, and that matters.",
+      "Steady effort, one session at a time. Well done.",
+      "Take a breath — you've earned it."
+    ],
+    "earlyMessages": [
+      "Every minute counts, and these minutes are yours. Thank you for showing up.",
+      "Stopping when you need to is part of working well. Be proud of the time you gave.",
+      "Whatever you did here is progress. Rest, then come back whenever you like."
+    ],
+    "focused": "Focused",
+    "planned": "Planned",
+    "again": "Focus again",
+    "newTask": "Something new",
+    "history": "See history"
+  },
+  "history": {
+    "title": "History",
+    "thisWeek": "This week",
+    "totalFocused": "Total focused time",
+    "sessions_one": "{{count}} session",
+    "sessions_other": "{{count}} sessions",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "completed": "Completed",
+    "endedEarly": "Ended early",
+    "ofPlanned": "of {{n}} min planned",
+    "emptyTitle": "No sessions yet",
+    "emptyBody": "Start your first one whenever you're ready. Every minute counts.",
+    "emptyCta": "Start focusing",
+    "loadError": "Couldn't load your history. Please try again in a moment."
+  },
+  "time": {
+    "lessThanMinute": "<1 min",
+    "minutes": "{{n}} min",
+    "hours": "{{h}} h",
+    "hoursMinutes": "{{h}} h {{m}} min"
+  },
+  "notify": {
+    "title": "Time's up — nice work",
+    "body": "{{task}} · {{n}} min of focus. Take a breath."
+  },
+  "settings": {
+    "title": "Settings",
+    "whenDone": "When time's up",
+    "soundTitle": "Gentle chime",
+    "soundHelp": "A soft two-note chime. Never an alarm. Stopping early is always silent.",
+    "tryChime": "Try it",
+    "notifyTitle": "Notification",
+    "notifyHelp": "A quiet message, only if this tab is in the background.",
+    "notifyDenied": "Notifications are blocked for this site. Allow them in your browser settings to use this.",
+    "notifyUnsupported": "This browser doesn't support notifications.",
+    "timerSection": "Timer",
+    "styleTitle": "Timer look",
+    "styleRing": "Ring",
+    "styleDisc": "Disc",
+    "hideDigitsTitle": "Hide the numbers",
+    "hideDigitsHelp": "Just watch the shape shrink. During a session, tap the timer to show or hide the numbers.",
+    "playing": "Playing…",
+    "chimeHint": "Can't hear it? Check that your device volume is up and this browser tab isn't muted.",
+    "chimeBlocked": "The browser didn't let the sound play. Tap the button again, and check that this tab isn't muted.",
+    "chimeUnsupported": "This browser can't play sounds from web pages.",
+    "showJourneyTitle": "Show the journey while focusing",
+    "showJourneyHelp": "A small line map under the timer when you are on a journey."
+  },
+  "journey": {
+    "title": "Choose a journey",
+    "intro": "Cross a region of Thailand with your focus time. Totally optional — change or leave any time.",
+    "cardEmptyTitle": "Add a journey",
+    "cardEmptyBody": "Optional: cross a region of Thailand with your focus time.",
+    "change": "Change",
+    "currentTitle": "Your journey",
+    "currentNote": "Choosing a new one ends this journey where the train is. Your minutes stay in your history.",
+    "leave": "Leave this journey",
+    "regionHeading": "Where to?",
+    "routeLine": "{{from}} → {{to}} · about {{km}} km",
+    "directionHeading": "Which way?",
+    "fromTop": "From the top",
+    "fromBottom": "From the bottom",
+    "goalHeading": "How much focus to cross it?",
+    "customGoal": "Custom (min)",
+    "goalHint": "Any number from {{min}} to {{max}} minutes",
+    "speed": "The train covers about {{km}} km for every focus minute.",
+    "start": "Start this journey",
+    "pickRegion": "Pick a region to begin",
+    "starting": "Starting…",
+    "error": "Couldn't start the journey. Please try again.",
+    "back": "Not now",
+    "between": "{{from}} → {{to}}",
+    "toNext": "About {{n}} min of focus to the next stop",
+    "arrivedAt": "Arrived at {{stop}}",
+    "endPassed": "You passed {{stops}}.",
+    "endRolling": "The train rolled {{km}} km closer.",
+    "endOnItsWay": "The train is on its way.",
+    "endArrivedTitle": "You arrived at {{stop}}!",
+    "endArrivedBody": "You crossed {{region}}. Rest here, or choose another journey whenever you like.",
+    "chooseNext": "Choose another journey"
+  },
+  "music": {
+    "title": "Focus music",
+    "help": "Optional. Paste a YouTube video or playlist link and a small player appears on the Focus screen. It never starts by itself. On desktop Chrome or Edge you can pop it out into a floating window.",
+    "label": "YouTube link",
+    "placeholder": "https://www.youtube.com/watch?v=…",
+    "invalid": "That doesn't look like a YouTube video or playlist link.",
+    "ok_video": "Video found. It will show on the Focus screen.",
+    "ok_playlist": "Playlist found. It will show on the Focus screen.",
+    "clear": "Remove",
+    "note": "YouTube may show ads depending on your account, and the player has to stay visible. Music needs internet and stops when you leave the Focus screen. The floating window only works in desktop Chrome and Edge, and closes if you close this tab.",
+    "bigger": "Bigger player",
+    "smaller": "Smaller player",
+    "playerTitle": "YouTube music player",
+    "tapPlay": "Tap play in the player when you're ready.",
+    "mix_ignored": "This is a YouTube Mix, which can't be embedded, so only this one video will play. For continuous music, use a playlist link or a long lo-fi stream.",
+    "popOut": "Pop out",
+    "popIn": "Bring back",
+    "poppedOut": "Playing in the floating window. Closing it brings the player back here.",
+    "popHint": "Pop out shows the video and timer in a small window that stays on top of other apps and tabs. The song restarts when it moves."
+  }
+}

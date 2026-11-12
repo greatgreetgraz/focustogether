@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode: <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens (calm + soft) ---------- */
+:root {
+  --bg: #f6f4ef;
+  --surface: #ffffff;
+  --surface-2: #efebe3;
+  --ink: #2b3036;
+  --muted: #5c666f;
+  --line: #e3ded3;
+  /* Borders of controls (inputs, outline buttons): >= 3:1 against page and card. */
+  --field: #8c8477;
+  --track: #e4e0d6;
+  --primary: #3f7169;
+  --primary-hover: #356059;
+  --on-primary: #ffffff;
+  --primary-soft: #dcebe7;
+  --warm: #f3e3d3;
+  --warm-ink: #7a4b2a;
+}
+
+.dark {
+  --bg: #14181c;
+  --surface: #1d2328;
+  --surface-2: #262d33;
+  --ink: #e8ecef;
+  --muted: #9aa5af;
+  --line: #2f373e;
+  --field: #6b7680;
+  --track: #2b343a;
+  --primary: #7fb5ad;
+  --primary-hover: #93c4bc;
+  --on-primary: #0e1a18;
+  --primary-soft: #22363a;
+  --warm: #3a2e26;
+  --warm-ink: #e8c9ae;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-field: var(--field);
+  --color-track: var(--track);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-warm: var(--warm);
+  --color-warm-ink: var(--warm-ink);
+
+  /* Nunito for Latin glyphs, Noto Sans Thai for Thai (falls through per-glyph). */
+  --font-sans: 'Nunito Variable', 'Noto Sans Thai Variable', ui-sans-serif,
+    system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  transition: background-color 700ms ease;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  /* Thai has taller ascenders/vowel marks; give lines some room. */
+  line-height: 1.55;
+}
+
+/* Focus screen: a soft wash tells you the state without reading anything. */
+body[data-mode='focus'] {
+  background-color: color-mix(in srgb, var(--primary) 8%, var(--bg));
+}
+body[data-mode='paused'] {
+  background-color: color-mix(in srgb, var(--warm) 60%, var(--bg));
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

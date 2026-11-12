@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta id="theme-color-meta" name="theme-color" content="#F6F4EF" />
+    <meta
+      name="description"
+      content="FocusTogether — calm, steady focus sessions for students."
+    />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>FocusTogether</title>
+    <script>
+      // Apply theme + language before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var t = localStorage.getItem('ft-theme')
+          var dark = t
+            ? t === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (dark) document.documentElement.classList.add('dark')
+          var m = document.getElementById('theme-color-meta')
+          if (m) m.setAttribute('content', dark ? '#14181C' : '#F6F4EF')
+          var l = localStorage.getItem('ft-lang')
+          document.documentElement.lang = l === 'en' ? 'en' : 'th'
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
